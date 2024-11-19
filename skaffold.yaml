@@ -1,0 +1,30 @@
+apiVersion: skaffold/v4beta2
+kind: Config
+metadata:
+  name: kubernetes-guide
+build:
+  artifacts:
+  - image: client-service
+    context: client-service
+    docker: {}
+  - image: travel-agency-service
+    context: travel-agency-service
+    docker: {}
+manifests:
+  rawYaml:
+  - client-service/client-config.yaml
+  - client-service/client-service-deployment.yaml
+  - storm/mongo-db-deployment.yaml
+  - storm/mongo-db-medium-deployment.yaml
+  - storm/mongo-deployment.yaml
+  - storm/storm-nimbus-service.json
+  - storm/storm-nimbus.json
+  - storm/storm-worker-controller.yaml
+  - storm/zookeeper-service.json
+  - storm/zookeeper.json
+  - storm/compose/nimbus-deployment.yaml
+  - storm/compose/nimbus-service.yaml
+  - storm/compose/supervisor-deployment.yaml
+  - storm/compose/zookeeper-deployment.yaml
+  - travel-agency-service/secret.yaml
+  - travel-agency-service/travel-agency-deployment.yaml

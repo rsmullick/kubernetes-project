@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mongodb-service
+  name: mongodb-service
+spec:
+  type: NodePort
+  ports:
+    - name: "http"
+      port: 27017
+      protocol: TCP
+      targetPort: 27017
+  selector:
+    service: mongodb-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongodb-service
+  name: mongodb-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mongodb-service
+  template:
+    metadata:
+      labels:
+        name: mongodb-service
+      name: mongodb-service
+    spec:
+      containers:
+      - args:
+          - --dbpath=/data/db
+          - --replSet=rs0
+          - --port=27017
+          - --bind_ip=0.0.0.0
+        command:
+            - mongod
+        image: mongo:latest
+        name: mongodb-service
+        imagePullPolicy: Never
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: username
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-secret
+                key: password
+#      exposedExternally: true

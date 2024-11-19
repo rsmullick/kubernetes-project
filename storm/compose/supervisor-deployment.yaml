@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    service: supervisor
+  name: supervisor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: supervisor
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        service: supervisor
+    spec:
+      containers:
+        - args:
+            - storm
+            - supervisor
+          image: storm
+          name: supervisor
+          imagePullPolicy: IfNotPresent
+          resources: {}
+      restartPolicy: Always
+status: {}

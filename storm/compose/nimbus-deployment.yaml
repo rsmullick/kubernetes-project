@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    service: nimbus
+  name: nimbus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: nimbus
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        service: nimbus
+    spec:
+      containers:
+        - args:
+            - storm
+            - nimbus
+          image: storm
+          name: nimbus
+          ports:
+            - containerPort: 6627
+          imagePullPolicy: IfNotPresent
+          resources: {}
+      restartPolicy: Always
+status: {}
